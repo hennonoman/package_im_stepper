@@ -5,6 +5,7 @@ import 'base_stepper.dart';
 class ImageStepper extends StatelessWidget {
   /// Each image defines a step. Hence, total number of images determines the total number of steps.
   final List<ImageProvider<dynamic>> images;
+  final List<Widget> customWidget;
 
   /// Whether to enable or disable the next and previous buttons.
   final bool enableNextPreviousButtons;
@@ -75,11 +76,15 @@ class ImageStepper extends StatelessWidget {
   /// Controls which `BaseStepper` constructor to call.
   final bool _isExternallyControlled;
 
+  /// background color for circular avatar
+  final Color backgroundColorCircularAvatar;
+
   /// Used when the stepper is controlled externally using the `goNext` and `goPrevious` properties. In which case, two variables must be maintained in a StatefulWidget to set the values of `gotNext` and `goPrevious` in a call to `setState()`, and if the stepping is moving foward `gotNext` must be set to true and `goPrevious` must be set to `false`. If moving backward `goPrevious` must be set to `true` and `goNext` must be set to `false`.
   ///
   /// For more information, see example [here](https://pub.dev/packages/im_stepper/example).
   ImageStepper.externallyControlled({
     this.images,
+    this.customWidget,
     this.direction = Axis.horizontal,
     this.stepColor,
     this.stepPadding = 1.0,
@@ -96,6 +101,7 @@ class ImageStepper extends StatelessWidget {
     this.steppingEnabled = true,
     this.goNext,
     this.goPrevious,
+    this.backgroundColorCircularAvatar,
     this.scrollingDisabled = false,
   })  : this.enableNextPreviousButtons = false,
         this.enableStepTapping = false,
@@ -107,29 +113,31 @@ class ImageStepper extends StatelessWidget {
   /// Used when the stepping is controller either by using the built-in next/previous buttons or by tapping. If stepping needs to be controlled externally then using the `BaseStepper.externallyControlled` constructor is a more optimized approach.
   ///
   /// However, if situation demands using this constructor, but externally controlling the stepper is still required, then `enableNextPreviousButtons`, `enableStepTapping` must be disabled and `previousButtonIcon`, `nextButtonIcon`, and `onStepReached` must be `null`.
-  ImageStepper({
-    this.images,
-    this.enableNextPreviousButtons = true,
-    this.enableStepTapping = true,
-    this.previousButtonIcon,
-    this.nextButtonIcon,
-    this.onStepReached,
-    this.direction = Axis.horizontal,
-    this.stepColor,
-    this.stepPadding = 0.0,
-    this.activeStepColor,
-    this.activeStepBorderColor,
-    this.activeStepBorderWidth = 0.5,
-    this.activeStepBorderPadding = 1.0,
-    this.lineColor,
-    this.lineLength = 50.0,
-    this.lineDotRadius = 1.0,
-    this.stepRadius = 24.0,
-    this.stepReachedAnimationEffect = Curves.bounceOut,
-    this.stepReachedAnimationDuration = const Duration(seconds: 1),
-    this.steppingEnabled = true,
-    this.scrollingDisabled = false,
-  })  : this._isExternallyControlled = false,
+  ImageStepper(
+      {this.images,
+      this.customWidget,
+      this.enableNextPreviousButtons = true,
+      this.enableStepTapping = true,
+      this.previousButtonIcon,
+      this.nextButtonIcon,
+      this.onStepReached,
+      this.direction = Axis.horizontal,
+      this.stepColor,
+      this.stepPadding = 0.0,
+      this.activeStepColor,
+      this.activeStepBorderColor,
+      this.activeStepBorderWidth = 0.5,
+      this.activeStepBorderPadding = 1.0,
+      this.lineColor,
+      this.lineLength = 50.0,
+      this.lineDotRadius = 1.0,
+      this.stepRadius = 24.0,
+      this.stepReachedAnimationEffect = Curves.bounceOut,
+      this.stepReachedAnimationDuration = const Duration(seconds: 1),
+      this.steppingEnabled = true,
+      this.scrollingDisabled = false,
+      this.backgroundColorCircularAvatar})
+      : this._isExternallyControlled = false,
         this.goNext = false,
         this.goPrevious = false;
 
@@ -186,7 +194,9 @@ class ImageStepper extends StatelessWidget {
     return List.generate(images.length, (index) {
       return CircleAvatar(
         radius: stepRadius,
-        backgroundImage: images[index],
+        backgroundImage: images.isEmpty ? null : images[index],
+        backgroundColor: backgroundColorCircularAvatar ?? Colors.blue,
+        child: customWidget.isEmpty ? null : customWidget[index],
       );
     });
   }
