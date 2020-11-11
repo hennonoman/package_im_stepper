@@ -4,8 +4,7 @@ import 'base_stepper.dart';
 
 class ImageStepper extends StatelessWidget {
   /// Each image defines a step. Hence, total number of images determines the total number of steps.
-  final List<ImageProvider<dynamic>> images;
-  final List<Widget> customWidget;
+  final List<Widget> images;
 
   /// Whether to enable or disable the next and previous buttons.
   final bool enableNextPreviousButtons;
@@ -84,7 +83,6 @@ class ImageStepper extends StatelessWidget {
   /// For more information, see example [here](https://pub.dev/packages/im_stepper/example).
   ImageStepper.externallyControlled({
     this.images,
-    this.customWidget,
     this.direction = Axis.horizontal,
     this.stepColor,
     this.stepPadding = 1.0,
@@ -115,7 +113,6 @@ class ImageStepper extends StatelessWidget {
   /// However, if situation demands using this constructor, but externally controlling the stepper is still required, then `enableNextPreviousButtons`, `enableStepTapping` must be disabled and `previousButtonIcon`, `nextButtonIcon`, and `onStepReached` must be `null`.
   ImageStepper(
       {this.images,
-      this.customWidget,
       this.enableNextPreviousButtons = true,
       this.enableStepTapping = true,
       this.previousButtonIcon,
@@ -194,9 +191,8 @@ class ImageStepper extends StatelessWidget {
     return List.generate(images.length, (index) {
       return CircleAvatar(
         radius: stepRadius,
-        backgroundImage: images.isEmpty ? null : images[index],
+        child: images[index],
         backgroundColor: backgroundColorCircularAvatar ?? Colors.blue,
-        child: customWidget.isEmpty ? null : customWidget[index],
       );
     });
   }
