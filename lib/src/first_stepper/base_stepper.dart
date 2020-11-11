@@ -236,7 +236,9 @@ class _BaseStepperState extends State<BaseStepper> {
     return SingleChildScrollView(
       scrollDirection: widget.direction,
       controller: _scrollController,
-      physics: widget.scrollingDisabled ? NeverScrollableScrollPhysics() : ClampingScrollPhysics(),
+      physics: widget.scrollingDisabled
+          ? NeverScrollableScrollPhysics()
+          : ClampingScrollPhysics(),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8.0),
         padding: const EdgeInsets.all(8.0),
@@ -315,8 +317,10 @@ class _BaseStepperState extends State<BaseStepper> {
     return IgnorePointer(
       ignoring: _selectedIndex == 0,
       child: IconButton(
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
         visualDensity: VisualDensity.compact,
-        icon: widget?.nextButtonIcon ??
+        icon: widget?.previousButtonIcon ??
             Icon(
               widget.direction == Axis.horizontal
                   ? Icons.arrow_left
@@ -332,6 +336,8 @@ class _BaseStepperState extends State<BaseStepper> {
     return IgnorePointer(
       ignoring: _selectedIndex == widget.children.length - 1,
       child: IconButton(
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
         visualDensity: VisualDensity.compact,
         icon: widget?.nextButtonIcon ??
             Icon(
